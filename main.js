@@ -55,10 +55,7 @@ class Canvas {
         let x = 0
         let y = 0;
         brain.forEach( neuron => {
-            // if (neuron.connectionWeight*100/255 > 0) {
-            //     debugger;
-            // }
-            this.context.fillStyle = `hsl(${180-neuron.connectionWeight*100/360}, 80%, 50%)`;
+            this.context.fillStyle = `hsl(${180-neuron.connectionWeight*100/90}, 80%, 50%)`;
             this.context.fillRect(x,y,1,1);
             x++;
             if (x == 32) {
@@ -76,17 +73,24 @@ class Canvas {
         }
         return lightArray;
     }
+
+    getCurrentImageBias() {
+        let sum = 0;
+        this.exportCanvasImage().forEach( lightPoint => {
+            sum += lightPoint;
+        });
+        return sum;
+    }
 }
 
 class Perceptron {
 
     brain = new Array();
     receivedImageValue;
-    realImageValue;
+    realImage;
 
     constructor() {
         this.receivedImageValue = 0;
-        this.realImageValue = 0;
         for (let x=0; x<1024; x++) {
             this.brain.push({
                 light : 0,
@@ -105,15 +109,15 @@ class Perceptron {
         this.brain.forEach( neuron => {
             this.receivedImageValue += neuron.light * neuron.connectionWeight
         });
-        if (this.receivedImageValue > this.realImageValue) {
-            console.log('detected!');
+        if (this.receivedImageValue > this.realImage.value) {
+            console.log('detected: '+ this.realImage.name);
             this.brain.forEach( neuron => {
-                neuron.connectionWeight += neuron.light/360;
+                neuron.connectionWeight -= neuron.light/90;
             });
-            this.realImageValue = this.receivedImageValue;
+            this.realImage.value = this.receivedImageValue;
         } else {
             this.brain.forEach( neuron => {
-                neuron.connectionWeight -= neuron.light/360;
+                neuron.connectionWeight += neuron.light/90;
             });
         }
         this.receivedImageValue = 0;
@@ -123,30 +127,52 @@ class Perceptron {
 let inputCanvas;
 let outputCanvas;
 let perceptron;
+let rect = {
+    name : 'rectangle',
+    value : 0
+};
+let circle = {
+    name : 'circle',
+    value : 0
+};
 
 function randBetween(minSize, maxSize, decimals) {
     return Number((Math.random() * (maxSize - minSize) + minSize).toFixed(decimals));
 }
 
+function activatePerceptron() {
+    perceptron.recieveImage(inputCanvas.exportCanvasImage());
+    perceptron.guessWhatImageIs();
+    outputCanvas.drawLightData(perceptron.brain);
+}
+
 function main() {
-    let intervalId;
+    let intervalId = 0;
     window.addEventListener('keyup', event => {
         switch(event.key) {
             case 'r':
                 inputCanvas.drawRect();
+                perceptron.realImage = rect;
+                activatePerceptron();
                 break;
             case 'c':
                 inputCanvas.drawCircle();
+                perceptron.realImage = circle;
+                activatePerceptron();
                 break;
             case 't':
-                intervalId = setInterval(() => {
-                    if(randBetween(1,2,0)>1) {
-                        inputCanvas.drawCircle();
-                    } else {
-                        inputCanvas.drawRect();
-                    }
-                    action();
-                },1);
+                if (intervalId == 0) {
+                    intervalId = setInterval(() => {
+                        if(randBetween(1,2,0)>1) {
+                            inputCanvas.drawCircle();
+                            perceptron.realImage = circle;
+                        } else {
+                            inputCanvas.drawRect();
+                            perceptron.realImage = rect;
+                        }
+                        activatePerceptron();
+                    },1500);
+                }
                 break;
             case 'p':
                 clearInterval(intervalId);
@@ -155,17 +181,5 @@ function main() {
 
     inputCanvas = new Canvas('#inputCanvas','#E0E8F6');
     outputCanvas = new Canvas('#outputCanvas','#F6E8E0');
-
-    let circleValue = 0;
-    let rectValue = 0;
-
     perceptron = new Perceptron();
 }
-
-function action() {
-    perceptron.recieveImage(inputCanvas.exportCanvasImage());
-    perceptron.guessWhatImageIs();
-    outputCanvas.drawLightData(perceptron.brain);
-}
-
-
