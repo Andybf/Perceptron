@@ -6,10 +6,12 @@
 class Canvas {
     canvas;
     context;
+    clearColor;
 
-    constructor() {
-        this.canvas = document.querySelector('canvas');
+    constructor(canvasId, clearColor) {
+        this.canvas = document.querySelector(canvasId);
         this.context = this.canvas.getContext('2d');
+        this.clearColor = clearColor;
         
         this.canvas.width = 32;
         this.canvas.height = 32;
@@ -18,7 +20,7 @@ class Canvas {
     }
 
     clear() {
-        this.context.fillStyle = '#E0E8F6';
+        this.context.fillStyle = this.clearColor;
         this.context.fillRect(0,0, this.canvas.width, this.canvas.height);
     }
 
@@ -49,13 +51,27 @@ class Canvas {
         this.context.fillRect(x,y,w,h);
     }
 
+    drawLightData(brain){
+        let x = 0
+        let y = 0;
+        brain.forEach( neuron => {
+            this.context.fillStyle = `hsl(180, 80%, ${neuron.connectionWeight*255}%)`;
+            this.context.fillRect(x,y,1,1);
+            x++;
+            if (x == 32) {
+                y++;
+                x = 0;
+            }
+        });
+    }
+
     exportCanvasImage(){
         let imgd = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height).data;
         let lightArray = [];
         for (let c=0; c<imgd.length; c+=4) {
             lightArray.push( (Math.max(imgd[c],imgd[c+1],imgd[c+2]) + Math.min(imgd[c],imgd[c+1],imgd[c+2]))/2 );
         }
-        console.log(lightArray);
+        return lightArray;
     }
 }
 
@@ -107,22 +123,22 @@ function main() {
     window.addEventListener('keyup', event => {
         switch(event.key) {
             case 'r':
-                canvas.drawRect();
+                inputCanvas.drawRect();
                 break;
             case 'c':
-                canvas.drawCircle();
+                inputCanvas.drawCircle();
         }
+        perceptron.recieveImage(inputCanvas.exportCanvasImage());
+        outputCanvas.drawLightData(perceptron.brain);
     });
 
-    let canvas = new Canvas();
-    canvas.drawRect();
-    canvas.exportCanvasImage();
+    let inputCanvas = new Canvas('#inputCanvas','#E0E8F6');
+    let outputCanvas = new Canvas('#outputCanvas','#F6E8E0');
 
     let circleValue = 0;
     let rectValue = 0;
 
     let perceptron = new Perceptron();
-
 }
 
 
