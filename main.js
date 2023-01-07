@@ -13,26 +13,40 @@ class Canvas {
         
         this.canvas.width = 32;
         this.canvas.height = 32;
-        
+
+        this.clear();
+    }
+
+    clear() {
         this.context.fillStyle = '#E0E8F6';
-        
         this.context.fillRect(0,0, this.canvas.width, this.canvas.height);
-        this.drawCircle();
-        this.exportCanvasImage();
     }
 
     drawCircle() {
-        let x= this.canvas.width/2;
-        let y= this.canvas.height/2;
-        let radiusX = this.canvas.width/2;
-        let radiusY = this.canvas.height/2;
+        this.clear();
+        let x = randBetween(8,this.canvas.width-8,0);
+        let y = randBetween(8,this.canvas.width-8,0);
+        let radiusX = randBetween(4,this.canvas.width/4,0);
+        let radiusY = randBetween(4,this.canvas.width/4,0);
         let rotation = Math.PI;
         let startAngle = 0;
         let endAngle = 2*Math.PI;
     
         this.context.fillStyle = 'black';
+        this.context.beginPath();
         this.context.ellipse(x, y, radiusX, radiusY, rotation, startAngle, endAngle);
         this.context.fill();
+        this.context.closePath();
+    }
+
+    drawRect () {
+        this.clear();
+        let x = randBetween(1,16,0);
+        let y = randBetween(1,16,0);
+        let w = randBetween(1,16,0);
+        let h = randBetween(1,16,0);
+        this.context.fillStyle = 'black';
+        this.context.fillRect(x,y,w,h);
     }
 
     exportCanvasImage(){
@@ -46,7 +60,7 @@ class Canvas {
 }
 
 class Perceptron {
-    
+
     brain = new Array();
     receivedImageValue;
     realImageValue;
@@ -71,12 +85,44 @@ class Perceptron {
         });
         if (this.receivedImageValue >= this.realImageValue) {
             console.log('detected!');
+            this.brain.forEach( neuron => {
+                this.connectionWeight += neuron.light/255;
+            });
+            this.realImageValue = this.receivedImageValue;
+        } else {
+            console.log('Not detected');
+            this.brain.forEach( neuron => {
+                this.connectionWeight -= neuron.light/255;
+            });
         }
     }
 }
 
+function randBetween(minSize, maxSize, decimals) {
+    return Number((Math.random() * (maxSize - minSize) + minSize).toFixed(decimals));
+}   
+
 function main() {
+
+    window.addEventListener('keyup', event => {
+        switch(event.key) {
+            case 'r':
+                canvas.drawRect();
+                break;
+            case 'c':
+                canvas.drawCircle();
+        }
+    });
+
     let canvas = new Canvas();
+    canvas.drawRect();
+    canvas.exportCanvasImage();
+
+    let circleValue = 0;
+    let rectValue = 0;
+
+    let perceptron = new Perceptron();
+
 }
 
 
