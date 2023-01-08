@@ -55,7 +55,7 @@ class Canvas {
         let x = 0
         let y = 0;
         brain.forEach( neuron => {
-            this.context.fillStyle = `hsl(${180-neuron.connectionWeight*100/90}, 80%, 50%)`;
+            this.context.fillStyle = `hsl(${180-neuron.connectionWeight*100/90}, 50%, 50%)`;
             this.context.fillRect(x,y,1,1);
             x++;
             if (x == 32) {
@@ -150,12 +150,12 @@ function main() {
     let intervalId = 0;
     window.addEventListener('keyup', event => {
         switch(event.key) {
-            case 'r':
+            case '1':
                 inputCanvas.drawRect();
                 perceptron.realImage = rect;
                 activatePerceptron();
                 break;
-            case 'c':
+            case '2':
                 inputCanvas.drawCircle();
                 perceptron.realImage = circle;
                 activatePerceptron();
@@ -176,6 +176,10 @@ function main() {
                 break;
             case 'p':
                 clearInterval(intervalId);
+                break;
+            case 'c':
+                inputCanvas.clear();
+                break;
         }
     });
 
