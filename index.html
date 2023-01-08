@@ -13,10 +13,12 @@
             display: flex;
             height: inherit;
             margin: 0;
+            flex-direction: row;
+            flex-wrap: wrap;
         }
         canvas {
             margin: auto;
-            height: 50vw;
+            height: 50vh;
             image-rendering: -moz-crisp-edges;
             image-rendering: -webkit-crisp-edges;
             image-rendering: pixelated;
@@ -25,8 +27,9 @@
     </style>
 </head>
 <body onload="main()">
-    <canvas id="inputCanvas"></canvas>
-    <canvas id="outputCanvas"></canvas>
+    <cmp-image-canvas id="input-canvas"></cmp-image-canvas>
+    <cmp-image-canvas id="output-canvas"></cmp-image-canvas>
+    <cmp-graph-canvas id="graph-canvas"></cmp-graph-canvas>
 </body>
 <script src="main.js"></script>
 </html>
