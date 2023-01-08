@@ -1,11 +1,14 @@
+/*
+ * Perceptron Project
+ * Anderson Bucchianico - jan/2023
+*/
+
 export default class Perceptron {
 
     brain = new Array();
-    receivedImageValue;
     realImage;
 
     constructor() {
-        this.receivedImageValue = 0;
         for (let x=0; x<1024; x++) {
             this.brain.push({
                 light : 0,
@@ -22,10 +25,12 @@ export default class Perceptron {
 
     guessWhatImageIs() {
         let isSuccess = false;
+        let receivedImageValue = 0;
+
         this.brain.forEach( neuron => {
-            this.receivedImageValue += neuron.light * neuron.connectionWeight;
+            receivedImageValue += neuron.light * neuron.connectionWeight;
         });
-        if (this.receivedImageValue > this.realImage.value) {
+        if (receivedImageValue > this.realImage.value) {
             this.brain.forEach( neuron => {
                 neuron.connectionWeight -= neuron.light;
             });
@@ -34,7 +39,7 @@ export default class Perceptron {
             this.brain.forEach( neuron => {
                 neuron.connectionWeight += neuron.light;
             });
-            this.realImage.value = this.receivedImageValue;
+            this.realImage.value = receivedImageValue;
         }
         this.receivedImageValue = 0;
         return isSuccess;

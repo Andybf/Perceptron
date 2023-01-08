@@ -1,3 +1,8 @@
+/*
+ * Perceptron Project
+ * Anderson Bucchianico - jan/2023
+*/
+
 export default class GraphCanvas extends HTMLElement {
 
     maxHeight = new Number();
@@ -30,7 +35,7 @@ export default class GraphCanvas extends HTMLElement {
         this.context.textAlign = 'center';
         this.context.fillStyle = 'black';
         this.context.strokeStyle = 'black';
-        this.context.font = 'Arial 30px';
+        this.context.font = '20px Arial';
 
         mapData.forEach( (key, value) => {
             let x = this.pointToPixelWidth(mapData) * index;
