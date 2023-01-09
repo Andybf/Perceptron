@@ -16,8 +16,8 @@ export default class ImageCanvas extends HTMLElement {
         this.canvas = this.querySelector('canvas');
         this.context = this.canvas.getContext('2d');
         
-        this.canvas.width = 32;
-        this.canvas.height = 32;
+        this.canvas.width = 64;
+        this.canvas.height = 64;
 
         this.clearColor = '#E0E8F6';
 
@@ -31,10 +31,10 @@ export default class ImageCanvas extends HTMLElement {
 
     drawCircle() {
         this.clear();
-        let x = randBetween(16,this.canvas.width/2,0);
-        let y = randBetween(16,this.canvas.width/2,0);
-        let radiusX = randBetween(8,this.canvas.width/2,0);
-        let radiusY = randBetween(8,this.canvas.width/2,0);
+        let x = randBetween(this.canvas.width/2,this.canvas.width/2,0);
+        let y = randBetween(this.canvas.width/2,this.canvas.width/2,0);
+        let radiusX = randBetween(this.canvas.width/4,this.canvas.width/2,0);
+        let radiusY = randBetween(this.canvas.width/4,this.canvas.width/2,0);
         let rotation = Math.PI;
         let startAngle = 0;
         let endAngle = 2*Math.PI;
@@ -48,10 +48,10 @@ export default class ImageCanvas extends HTMLElement {
 
     drawRect () {
         this.clear();
-        let x = randBetween(1,16,0);
-        let y = randBetween(1,16,0);
-        let w = randBetween(16,16,0);
-        let h = randBetween(16,16,0);
+        let x = randBetween(1,this.canvas.width/2,0);
+        let y = randBetween(1,this.canvas.width/2,0);
+        let w = randBetween(this.canvas.width/2,this.canvas.width/2,0);
+        let h = randBetween(this.canvas.width/2,this.canvas.width/2,0);
         this.context.fillStyle = 'black';
         this.context.fillRect(x,y,w,h);
     }
@@ -60,10 +60,15 @@ export default class ImageCanvas extends HTMLElement {
         let x = 0
         let y = 0;
         brain.forEach( neuron => {
-            this.context.fillStyle = `hsl(${neuron.connectionWeight*100/360}, 50%, 50%)`;
+            let value = Math.abs(neuron.connectionWeight);
+            let hex = new Array();
+            hex.push((value & 0xFF0000) >> 16);
+            hex.push((value & 0x00FF00) >> 8);
+            hex.push((value & 0x0000FF) >> 0);
+            this.context.fillStyle = `rgb(${hex[0]},${hex[1]},${hex[2]})`;
             this.context.fillRect(x,y,1,1);
             x++;
-            if (x == 32) {
+            if (x == 64) {
                 y++;
                 x = 0;
             }

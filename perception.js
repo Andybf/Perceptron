@@ -6,10 +6,10 @@
 export default class Perceptron {
 
     brain = new Array();
-    realImage;
+    bias = 0;
 
     constructor() {
-        for (let x=0; x<1024; x++) {
+        for (let x=0; x<64*64; x++) {
             this.brain.push({
                 light : 0,
                 connectionWeight : 0
@@ -30,7 +30,7 @@ export default class Perceptron {
         this.brain.forEach( neuron => {
             receivedImageValue += neuron.light * neuron.connectionWeight;
         });
-        if (receivedImageValue > this.realImage.value) {
+        if (receivedImageValue > this.bias) {
             this.brain.forEach( neuron => {
                 neuron.connectionWeight -= neuron.light;
             });
@@ -39,7 +39,7 @@ export default class Perceptron {
             this.brain.forEach( neuron => {
                 neuron.connectionWeight += neuron.light;
             });
-            this.realImage.value = receivedImageValue;
+            this.bias = receivedImageValue;
         }
         this.receivedImageValue = 0;
         return isSuccess;

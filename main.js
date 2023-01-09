@@ -42,7 +42,7 @@ async function main() {
     perceptron = new Perceptron();
 }
 
-function activatePerceptron() {
+function isPerceptronHasSuccess() {
     let isSuccess = false;
     perceptron.recieveImage(inputCanvas.exportCanvasImage());
     isSuccess = perceptron.guessWhatImageIs();
@@ -54,13 +54,19 @@ function handleKeyEvent(event) {
     switch(event.key) {
         case '1':
             inputCanvas.drawRect();
-            perceptron.realImage = rect;
-            console.log(`${rect.name} detected? ${activatePerceptron()}`);
+            currentIteration++;
+            if (isPerceptronHasSuccess()) {
+                successCount++;
+                console.log(`${rect.name} detected? true`);
+            }           
             break;
         case '2':
             inputCanvas.drawCircle();
-            perceptron.realImage = circle;
-            console.log(`${circle.name} detected? ${activatePerceptron()}`);
+            currentIteration++;
+            if (isPerceptronHasSuccess()) {
+                successCount++;
+                console.log(`${circle.name} detected? true`);
+            }
             break;
         case 't': //training
             startTraining();
@@ -82,14 +88,11 @@ function startTraining() {
     trainingIntervalId = setInterval(() => {
         if(randBetween(1,2,0) > 1) {
             inputCanvas.drawCircle();
-            perceptron.realImage = circle;
         } else {
             inputCanvas.drawRect();
-            perceptron.realImage = rect;
         }
-        ;
         currentIteration++;
-        if(activatePerceptron()) {
+        if(isPerceptronHasSuccess()) {
             successCount++;
         }
         if (currentIteration % 100 == 0) {

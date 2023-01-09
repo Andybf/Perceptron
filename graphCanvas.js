@@ -35,7 +35,7 @@ export default class GraphCanvas extends HTMLElement {
         this.context.textAlign = 'center';
         this.context.fillStyle = 'black';
         this.context.strokeStyle = 'black';
-        this.context.font = '20px Arial';
+        this.context.font = '14px Arial';
 
         mapData.forEach( (key, value) => {
             let x = this.pointToPixelWidth(mapData) * index;
