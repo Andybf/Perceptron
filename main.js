@@ -6,7 +6,6 @@
 let Perceptron;
 let inputCanvas;
 let outputCanvas;
-let graphCanvas;
 let perceptron;
 let rect = {
     name : 'rectangle',
@@ -21,24 +20,40 @@ let currentIteration = 0;
 let mapData = new Map();
 let trainingIntervalId = 0;
 
+let isTrainingOnCourse = false;
+
+let startTrainingButton;
+let stopTrainingButton;
+
 async function main() {
     await import('./imageCanvas.js').then( ( appClassDefinition) => {
         customElements.define("cmp-image-canvas", appClassDefinition.default);
-    });
-    await import('./graphCanvas.js').then( ( appClassDefinition) => {
-        customElements.define("cmp-graph-canvas", appClassDefinition.default);
     });
     await import('./perception.js').then( ( appClassDefinition) => {
         Perceptron = appClassDefinition.default;
     });
 
-    window.addEventListener('keyup', event => {
-        handleKeyEvent(event);
+    stopTrainingButton = document.querySelector('button[id="reset-training"]');
+    stopTrainingButton.addEventListener('click', event => {
+
     });
+
+    startTrainingButton = document.querySelector('button[id="start-training"]');
+    startTrainingButton.addEventListener('click', event => {
+        if (isTrainingOnCourse) {
+            stopTraining();
+            startTrainingButton.innerText = 'Start automatic training';
+        } else {
+            startTraining();
+            startTrainingButton.innerText = 'Stop Training';
+        } 
+    });
+
+    let iterationCount = document.querySelector('#iteration-count');
+    let successRate = document.querySelector('#success-rate');
 
     inputCanvas = document.querySelector('#input-canvas');
     outputCanvas = document.querySelector('#output-canvas');
-    graphCanvas = document.querySelector('#graph-canvas');
     perceptron = new Perceptron();
 }
 
@@ -81,7 +96,14 @@ function handleKeyEvent(event) {
     }
 }
 
+function stopTraining() {
+    clearInterval(trainingIntervalId);
+    trainingIntervalId = 0;
+    isTrainingOnCourse = false;
+}
+
 function startTraining() {
+    isTrainingOnCourse = true;
     if (trainingIntervalId != 0) {
         return;
     }
@@ -97,7 +119,6 @@ function startTraining() {
         }
         if (currentIteration % 100 == 0) {
             mapData.set(currentIteration,Number((successCount*100)/currentIteration).toFixed(1));
-            graphCanvas.drawGraphOnCanvas(mapData);
         }
     },0.1);
 }

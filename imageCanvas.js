@@ -56,6 +56,15 @@ export default class ImageCanvas extends HTMLElement {
         this.context.fillRect(x,y,w,h);
     }
 
+    drawCharacter(message) {
+        this.context.font = `${this.canvas.width/2}px Arial`;
+        this.context.fillText(
+            message[0],
+            randBetween(1,this.canvas.width/2,0),
+            randBetween(1,this.canvas.width/2,0)
+        );
+    }
+
     drawLightData(brain){
         let x = 0
         let y = 0;
