@@ -1,7 +1,8 @@
 html {
     height: 100%;
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 12px;
+    font-size: 10pt;
+    color: white
 }
 body {
     display: flex;
@@ -15,41 +16,59 @@ h2 {
     margin: 0;
 }
 
+h3 {
+    margin: 1.5rem 0 0.5rem;
+}
+
 #perceptron-menu {
     position: absolute;
-    top: 5%;
-    left: 5%;
-    background: grey;
-    padding: 10px;
+    top: 12%;
+    bottom: 12%;
+    left: 2%;
+    background: #0000008a;
+    backdrop-filter: blur(100px);
+    padding: 1.25rem;
     border-radius: 0.5rem;
     display: grid;
     row-gap: 0.5rem;
+    overflow: scroll;
 }
 
 .control-section {
     display: grid;
-    row-gap: 0.40rem;
+    row-gap: 0.75rem;
 }
 
 .control-section > div {
     display: flex;
-    justify-content: space-between;
-    column-gap: 1rem;
+    justify-content: center;
+    column-gap: 0.5rem;
+    padding-bottom: 0.1rem;
+    border-bottom: 1px solid white;
 }
 
 select {
-    background-color: #FFFFFF80;
-    border: 1px solid #000000A0;
+    background-color: transparent;
+    border: none;
+    color: white;
     border-radius: 3px;
     padding: 1px 2px;
     min-width: 98px;
 }
 
+label {
+    display: flex;
+    align-items: center;
+    width: 105px;
+    flex-direction: row-reverse;
+}
+
 input {
-    background-color: #FFFFFF80;
-    border: 1px solid #000000A0;
+    background-color: transparent;
+    border: none;
     border-radius: 3px;
-    width: 92px;
+    color: white;
+    width: 100px;
 }
 
 input:read-only {
@@ -58,7 +77,7 @@ input:read-only {
 }
 
 button {
-    background-color: #FFFFFFC0;
+    background-image: linear-gradient(0deg, #00000047, #ffffffde);
     border: 1px solid #000000A0;
     border-radius: 3px;
     padding: 0.5rem;

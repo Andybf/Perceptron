@@ -7,23 +7,23 @@ let Perceptron;
 let inputCanvas;
 let outputCanvas;
 let perceptron;
-let rect = {
-    name : 'rectangle',
-    value : 0
-};
-let circle = {
-    name : 'circle',
-    value : 0
-};
 let successCount = 0;
+
 let currentIteration = 0;
-let mapData = new Map();
 let trainingIntervalId = 0;
 
 let isTrainingOnCourse = false;
 
 let startTrainingButton;
 let stopTrainingButton;
+
+let currentStatusInput;
+let trainingSpeedInput;
+let iterationCountInput;
+let perceptronBiasInput;
+let successRateInput;
+let errorCountInput;
+let successCountInput;
 
 async function main() {
     await import('./imageCanvas.js').then( ( appClassDefinition) => {
@@ -35,7 +35,7 @@ async function main() {
 
     stopTrainingButton = document.querySelector('button[id="reset-training"]');
     stopTrainingButton.addEventListener('click', event => {
-
+        resetPerceptron();
     });
 
     startTrainingButton = document.querySelector('button[id="start-training"]');
@@ -49,8 +49,13 @@ async function main() {
         } 
     });
 
-    let iterationCount = document.querySelector('#iteration-count');
-    let successRate = document.querySelector('#success-rate');
+    currentStatusInput = document.querySelector('input[id="current-status"]');
+    iterationCountInput = document.querySelector('input[id="iteration-count"]');
+    perceptronBiasInput = document.querySelector('input[id="perceptron-bias"]');
+    successRateInput = document.querySelector('input[id="success-rate"]');
+    errorCountInput = document.querySelector('input[id="error-count"]');
+    successCountInput = document.querySelector('input[id="success-count"]');
+    trainingSpeedInput = document.querySelector('#training-speed');
 
     inputCanvas = document.querySelector('#input-canvas');
     outputCanvas = document.querySelector('#output-canvas');
@@ -65,44 +70,15 @@ function isPerceptronHasSuccess() {
     return isSuccess;
 }
 
-function handleKeyEvent(event) {
-    switch(event.key) {
-        case '1':
-            inputCanvas.drawRect();
-            currentIteration++;
-            if (isPerceptronHasSuccess()) {
-                successCount++;
-                console.log(`${rect.name} detected? true`);
-            }           
-            break;
-        case '2':
-            inputCanvas.drawCircle();
-            currentIteration++;
-            if (isPerceptronHasSuccess()) {
-                successCount++;
-                console.log(`${circle.name} detected? true`);
-            }
-            break;
-        case 't': //training
-            startTraining();
-            break;
-        case 'p': // pause
-            clearInterval(trainingIntervalId);
-            trainingIntervalId = 0;
-            break;
-        case 'c': // clear
-            inputCanvas.clear();
-            break;
-    }
-}
-
 function stopTraining() {
+    currentStatusInput.value = 'Idle';
     clearInterval(trainingIntervalId);
     trainingIntervalId = 0;
     isTrainingOnCourse = false;
 }
 
 function startTraining() {
+    currentStatusInput.value = 'Training...';
     isTrainingOnCourse = true;
     if (trainingIntervalId != 0) {
         return;
@@ -117,10 +93,26 @@ function startTraining() {
         if(isPerceptronHasSuccess()) {
             successCount++;
         }
-        if (currentIteration % 100 == 0) {
-            mapData.set(currentIteration,Number((successCount*100)/currentIteration).toFixed(1));
-        }
-    },0.1);
+        iterationCountInput.value = currentIteration;
+        perceptronBiasInput.value = perceptron.bias.toFixed(2);
+        successRateInput.value = Number((successCount*100)/currentIteration).toFixed(2);
+        successCountInput.value = successCount;
+        errorCountInput.value = currentIteration - successCount;
+    },1000/trainingSpeedInput.value);
+}
+
+function resetPerceptron() {
+    currentStatusInput.value = 'rebooted';
+    inputCanvas.clear();
+    outputCanvas.clear();
+
+    iterationCountInput.value = 0;
+    perceptronBiasInput.value = 0;
+    successRateInput.value = 0;
+    successCountInput.value = 0;
+    errorCountInput.value = 0;
+
+    perceptron = new Perceptron();
 }
 
 function randBetween(minSize, maxSize, decimals) {
