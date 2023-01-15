@@ -10,6 +10,9 @@ body {
     margin: 0;
     flex-direction: row;
     flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    column-gap: 1%;
 }
 
 h2 {
@@ -20,11 +23,15 @@ h3 {
     margin: 1.5rem 0 0.5rem;
 }
 
+.hidden {
+    display: none !important;
+}
+
 #perceptron-menu {
     position: absolute;
     top: 12%;
     bottom: 12%;
-    left: 2%;
+    left: 1%;
     background: #0000008a;
     backdrop-filter: blur(100px);
     padding: 1.25rem;
@@ -52,8 +59,8 @@ select {
     border: none;
     color: white;
     border-radius: 3px;
-    padding: 1px 2px;
-    min-width: 98px;
+    padding: 1px 0px;
+    min-width: 104px;
 }
 
 label {
@@ -68,7 +75,11 @@ input {
     border: none;
     border-radius: 3px;
     color: white;
-    width: 100px;
+    width: 105px;
+    padding: 1px 0px;
+}
+input:disabled {
+    opacity: 0.5;
 }
 
 input:read-only {

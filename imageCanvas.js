@@ -57,11 +57,14 @@ export default class ImageCanvas extends HTMLElement {
     }
 
     drawCharacter(message) {
+        this.clear();
         this.context.font = `${this.canvas.width/2}px Arial`;
+        this.context.fillStyle = 'black';
+        this.context.textAlign = 'center';
         this.context.fillText(
             message[0],
-            randBetween(1,this.canvas.width/2,0),
-            randBetween(1,this.canvas.width/2,0)
+            randBetween(8,this.canvas.width-8,0),
+            randBetween(16,this.canvas.height,0)
         );
     }
 
