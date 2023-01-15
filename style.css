@@ -39,6 +39,7 @@ h3 {
     display: grid;
     row-gap: 0.5rem;
     overflow: scroll;
+    z-index: 99;
 }
 
 .control-section {

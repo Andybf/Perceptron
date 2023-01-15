@@ -77,13 +77,91 @@ async function main() {
 
     drawGroup1Button = document.querySelector('button[id="draw-group1"]');
     drawGroup1Button.addEventListener('click', event => {
-        currentStatusInput.value = 'Awaiting input...';
-        inputCanvas.clear();
+        selectDataInput.disabled = (selectDataInput.disabled) ? false : true;
+        drawGroup2Button.disabled = (drawGroup2Button.disabled) ? false : true;
+        trainingSpeedInput.disabled = (trainingSpeedInput.disabled) ? false : true;
+        startTrainingButton.disabled = (startTrainingButton.disabled) ? false : true;
+        resetTrainingButton.disabled = (resetTrainingButton.disabled) ? false : true;
+
+        if (drawGroup1Button.innerText == 'Draw group 1') {
+            isDrawGroupActive = true;
+            drawGroup1Button.innerText = 'Cancel draw';
+            currentStatusInput.value = 'Awaiting input...';
+            inputCanvas.clear();
+
+            if (selectDataInput.options[selectDataInput.selectedIndex].innerText == 'characters') {
+                inputCanvas.onclick = event => {
+                    let posX = 64/inputCanvas.clientWidth * event.offsetX;
+                    let posY = 64/inputCanvas.clientHeight * event.offsetY;
+                    inputCanvas.drawCharacter(group1Input.value, posX, posY);
+                    currentIteration++;
+                    if(isPerceptronHasSuccess()) {
+                        successCount++;
+                    }
+                    updateInterface();
+                };
+            } else {
+                inputCanvas.onclick = event => {
+                    let posX = 64/inputCanvas.clientWidth * event.offsetX - 16;
+                    let posY = 64/inputCanvas.clientHeight * event.offsetY - 16;
+                    inputCanvas.drawRect(posX, posY);
+                    currentIteration++;
+                    if(isPerceptronHasSuccess()) {
+                        successCount++;
+                    }
+                    updateInterface();
+                };
+            }
+        } else {
+            inputCanvas.onclick = null;
+            drawGroup1Button.innerText = 'Draw group 1';
+            currentStatusInput.value = 'Idle';
+        }
+        
     });
+
     drawGroup2Button = document.querySelector('button[id="draw-group2"]');
     drawGroup2Button.addEventListener('click', event => {
-        currentStatusInput.value = 'Awaiting input...';
-        inputCanvas.clear();
+        selectDataInput.disabled = (selectDataInput.disabled) ? false : true;
+        drawGroup1Button.disabled = (drawGroup1Button.disabled) ? false : true;
+        trainingSpeedInput.disabled = (trainingSpeedInput.disabled) ? false : true;
+        startTrainingButton.disabled = (startTrainingButton.disabled) ? false : true;
+        resetTrainingButton.disabled = (resetTrainingButton.disabled) ? false : true;
+
+        if (drawGroup2Button.innerText == 'Draw group 2') {
+            isDrawGroupActive = true;
+            drawGroup2Button.innerText = 'Cancel draw';
+            currentStatusInput.value = 'Awaiting input...';
+            inputCanvas.clear();
+
+            if (selectDataInput.options[selectDataInput.selectedIndex].innerText == 'characters') {
+                inputCanvas.onclick = event => {
+                    let posX = 64/inputCanvas.clientWidth * event.offsetX;
+                    let posY = 64/inputCanvas.clientHeight * event.offsetY;
+                    inputCanvas.drawCharacter(group2Input.value, posX, posY);
+                    currentIteration++;
+                    if(isPerceptronHasSuccess()) {
+                        successCount++;
+                    }
+                    updateInterface();
+                };
+            } else {
+                inputCanvas.onclick = event => {
+                    let posX = 64/inputCanvas.clientWidth * event.offsetX;
+                    let posY = 64/inputCanvas.clientHeight * event.offsetY;
+                    inputCanvas.drawCircle(posX, posY);
+                    currentIteration++;
+                    if(isPerceptronHasSuccess()) {
+                        successCount++;
+                    }
+                    updateInterface();
+                };
+            }
+        } else {
+            inputCanvas.onclick = null;
+            drawGroup2Button.innerText = 'Draw group 2';
+            currentStatusInput.value = 'Idle';
+        }
     });
 
     currentStatusInput = document.querySelector('input[id="current-status"]');
@@ -122,9 +200,9 @@ function startTraining() {
     if (selectDataInput.options[selectDataInput.selectedIndex].innerText == 'characters') {
         trainingIntervalId = setInterval(() => {
             if(randBetween(1,2,0) > 1) {
-                inputCanvas.drawCharacter(group1Input.value);
+                inputCanvas.drawCharacterAtRandomPosition(group1Input.value);
             } else {
-                inputCanvas.drawCharacter(group2Input.value);
+                inputCanvas.drawCharacterAtRandomPosition(group2Input.value);
             }
             currentIteration++;
             if(isPerceptronHasSuccess()) {
@@ -135,9 +213,9 @@ function startTraining() {
     } else {
         trainingIntervalId = setInterval(() => {
             if(randBetween(1,2,0) > 1) {
-                inputCanvas.drawCircle();
+                inputCanvas.drawCircleAtRandomPosition();
             } else {
-                inputCanvas.drawRect();
+                inputCanvas.drawRectAtRandomPosition();
             }
             currentIteration++;
             if(isPerceptronHasSuccess()) {
@@ -176,6 +254,9 @@ function resetPerceptron() {
     successRateInput.value = 0;
     successCountInput.value = 0;
     errorCountInput.value = 0;
+
+    currentIteration = 0;
+    successCount = 0;
 
     perceptron = new Perceptron();
 }
