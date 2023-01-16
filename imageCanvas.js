@@ -27,41 +27,6 @@ export default class ImageCanvas extends HTMLElement {
         this.context.fillRect(0,0, this.canvas.width, this.canvas.height);
     }
 
-    drawCircleAtRandomPosition() {
-        let x = randBetween(this.canvas.width/2,this.canvas.width/2,0);
-        let y = randBetween(this.canvas.width/2,this.canvas.width/2,0);
-        this.drawCircle(x, y);
-    }
-
-    drawCircle(x, y) {
-        this.clear();
-        let radiusX = randBetween(this.canvas.width/4,this.canvas.width/2,0);
-        let radiusY = randBetween(this.canvas.width/4,this.canvas.width/2,0);
-        let rotation = Math.PI;
-        let startAngle = 0;
-        let endAngle = 2*Math.PI;
-    
-        this.context.fillStyle = 'black';
-        this.context.beginPath();
-        this.context.ellipse(x, y, radiusX, radiusY, rotation, startAngle, endAngle);
-        this.context.fill();
-        this.context.closePath();
-    }
-
-    drawRectAtRandomPosition() {
-        let x = randBetween(1,this.canvas.width/2,0);
-        let y = randBetween(1,this.canvas.width/2,0);
-        this.drawRect(x, y);
-    }
-
-    drawRect(x, y) {
-        this.clear();
-        let w = randBetween(this.canvas.width/2,this.canvas.width/2,0);
-        let h = randBetween(this.canvas.width/2,this.canvas.width/2,0);
-        this.context.fillStyle = 'black';
-        this.context.fillRect(x,y,w,h);
-    }
-
     drawCharacterAtRandomPosition(message) {
         let x = randBetween(8,this.canvas.width-8,0);
         let y = randBetween(16,this.canvas.height,0);
@@ -70,10 +35,11 @@ export default class ImageCanvas extends HTMLElement {
 
     drawCharacter(message, x, y) {
         this.clear();
-        this.context.font = `${this.canvas.width/2}px Arial`;
+        let fontSize = this.canvas.width/2
+        this.context.font = `${fontSize}px Arial`;
         this.context.fillStyle = 'black';
         this.context.textAlign = 'center';
-        this.context.fillText(message[0], x, y);
+        this.context.fillText(message[0], x, y+fontSize/3);
     }
 
     drawLightData(brain){

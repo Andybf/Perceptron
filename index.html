@@ -14,19 +14,12 @@
             <section class="control-section" id="perceptron-config">
                 <h3>Settings</h3>
                 <div>
-                    <label>Type of data</label>
-                    <select>
-                        <option>geometric</option>
-                        <option>characters</option>
-                    </select>
+                    <label>First char</label>
+                    <input type="text" minlength="1" maxlength="1" value="0" id="first-char"/>
                 </div>
-                <div class="char-hideable-content hidden">
-                    <label>group1</label>
-                    <input type="text" maxlength="1" id="first-char"/>
-                </div>
-                <div class="char-hideable-content hidden">
-                    <label>group2</label>
-                    <input type="text" maxlength="1" id="second-char"/>
+                <div>
+                    <label>Second char</label>
+                    <input type="text" minlength="1" maxlength="1" value="1" id="second-char"/>
                 </div>
                 <div>
                     <label>Training Speed</label>
@@ -42,8 +35,18 @@
 
             <section class="control-section">
                 <h3>Tools</h3>
-                <button id="draw-group1">Draw group 1</button>
-                <button id="draw-group2">Draw group 2</button>
+                <button
+                    value="first-char"
+                    class="draw-button"
+                    title="Draw group 1"
+                    id="draw-group1"
+                >Draw group 1</button>
+                <button
+                    value="second-char"
+                    class="draw-button"
+                    title="Draw group 2"
+                    id="draw-group2"
+                >Draw group 2</button>
             </section>
 
             <section class="control-section" id="perceptron-status">
