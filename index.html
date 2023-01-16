@@ -14,12 +14,12 @@
             <section class="control-section" id="perceptron-config">
                 <h3>Settings</h3>
                 <div>
-                    <label>First char</label>
-                    <input type="text" minlength="1" maxlength="1" value="0" id="first-char"/>
+                    <label>First symbol</label>
+                    <input type="text" minlength="1" maxlength="1" value="0" id="first-symbol"/>
                 </div>
                 <div>
-                    <label>Second char</label>
-                    <input type="text" minlength="1" maxlength="1" value="1" id="second-char"/>
+                    <label>Second symbol</label>
+                    <input type="text" minlength="1" maxlength="1" value="1" id="second-symbol"/>
                 </div>
                 <div>
                     <label>Training Speed</label>
@@ -36,17 +36,17 @@
             <section class="control-section">
                 <h3>Tools</h3>
                 <button
-                    value="first-char"
+                    related-input-id="first-symbol"
                     class="draw-button"
-                    title="Draw group 1"
-                    id="draw-group1"
-                >Draw group 1</button>
+                    title="Draw symbol 1"
+                    id="draw-symbol1"
+                >Draw symbol 1</button>
                 <button
-                    value="second-char"
+                    related-input-id="second-symbol"
                     class="draw-button"
-                    title="Draw group 2"
-                    id="draw-group2"
-                >Draw group 2</button>
+                    title="Draw symbol 2"
+                    id="draw-symbol2"
+                >Draw symbol 2</button>
             </section>
 
             <section class="control-section" id="perceptron-status">

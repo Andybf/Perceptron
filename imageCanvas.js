@@ -8,6 +8,7 @@ export default class ImageCanvas extends HTMLElement {
     canvas;
     context;
     clearColor;
+    fontSize;
 
     constructor() {
         super();
@@ -18,6 +19,8 @@ export default class ImageCanvas extends HTMLElement {
         this.canvas.width = 64;
         this.canvas.height = 64;
         this.clearColor = '#E0E8F6';
+
+        this.fontSize = this.canvas.width/2;
 
         this.clear();
     }
@@ -35,11 +38,10 @@ export default class ImageCanvas extends HTMLElement {
 
     drawCharacter(message, x, y) {
         this.clear();
-        let fontSize = this.canvas.width/2
-        this.context.font = `${fontSize}px Arial`;
+        this.context.font = `${this.fontSize}px Arial`;
         this.context.fillStyle = 'black';
         this.context.textAlign = 'center';
-        this.context.fillText(message[0], x, y+fontSize/3);
+        this.context.fillText(message[0], x, y);
     }
 
     drawLightData(brain){

@@ -20,8 +20,8 @@ let group2Input;
 let startTrainingButton;
 let resetTrainingButton;
 
-let drawGroup1Button;
-let drawGroup2Button;
+let drawSymbol1Button;
+let drawSymbol2Button;
 
 let currentStatusInput;
 let trainingSpeedInput;
@@ -38,8 +38,8 @@ async function main() {
     await import('./perception.js').then( ( appClassDefinition) => {
         Perceptron = appClassDefinition.default;
     });
-    group1Input = document.querySelector('input[id="first-char"]');
-    group2Input = document.querySelector('input[id="second-char"]');
+    group1Input = document.querySelector('input[id="first-symbol"]');
+    group2Input = document.querySelector('input[id="second-symbol"]');
     trainingSpeedInput = document.querySelector('#training-speed');
 
     resetTrainingButton = document.querySelector('button[id="reset-training"]');
@@ -60,13 +60,13 @@ async function main() {
         } 
     });
 
-    drawGroup1Button = document.querySelector('button[id="draw-group1"]');
-    drawGroup1Button.addEventListener('click', event => {
+    drawSymbol1Button = document.querySelector('button[id="draw-symbol1"]');
+    drawSymbol1Button.addEventListener('click', event => {
         drawCharViaUserInput(event);
     });
 
-    drawGroup2Button = document.querySelector('button[id="draw-group2"]');
-    drawGroup2Button.addEventListener('click', event => {
+    drawSymbol2Button = document.querySelector('button[id="draw-symbol2"]');
+    drawSymbol2Button.addEventListener('click', event => {
         drawCharViaUserInput(event);
     });
 
@@ -92,15 +92,15 @@ function drawCharViaUserInput(event) {
     });
     event.target.disabled = false;
 
-    if (event.target.innerText.includes('Draw group')) {
-        let inputValue = event.target.value;
+    if (event.target.innerText.includes('Draw symbol')) {
+        let inputId = event.target.attributes['related-input-id'].value;
         event.target.innerText = 'Cancel draw';
         currentStatusInput.value = 'Awaiting input...';
         inputCanvas.clear();
         inputCanvas.onclick = canvasEvent => {
             let posX = 64/inputCanvas.clientWidth * canvasEvent.offsetX;
-            let posY = 64/inputCanvas.clientHeight * canvasEvent.offsetY;
-            inputCanvas.drawCharacter(document.querySelector('#'+inputValue).value, posX, posY);
+            let posY = (64/inputCanvas.clientHeight * canvasEvent.offsetY) + inputCanvas.fontSize/3;
+            inputCanvas.drawCharacter(document.querySelector('#'+inputId).value, posX, posY);
             currentIteration++;
             if(isPerceptronHasSuccess()) {
                 successCount++;
@@ -166,8 +166,8 @@ function toggleSettingsEdit() {
     group2Input.disabled = (group2Input.disabled) ? false : true;
     trainingSpeedInput.disabled = (trainingSpeedInput.disabled) ? false : true;
     resetTrainingButton.disabled = (resetTrainingButton.disabled) ? false : true;
-    drawGroup1Button.disabled = (drawGroup1Button.disabled) ? false : true;
-    drawGroup2Button.disabled = (drawGroup2Button.disabled) ? false : true;
+    drawSymbol1Button.disabled = (drawSymbol1Button.disabled) ? false : true;
+    drawSymbol2Button.disabled = (drawSymbol2Button.disabled) ? false : true;
 }
 
 function resetPerceptron() {
