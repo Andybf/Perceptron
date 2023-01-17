@@ -102,8 +102,8 @@ function drawCharViaUserInput(event) {
         currentStatusInput.value = 'Awaiting input...';
         inputCanvas.clear();
         inputCanvas.onclick = canvasEvent => {
-            let posX = 64/inputCanvas.clientWidth * canvasEvent.offsetX;
-            let posY = (64/inputCanvas.clientHeight * canvasEvent.offsetY) + inputCanvas.fontSize/3;
+            let posX = 64/inputCanvas.firstChild.clientWidth * canvasEvent.offsetX;
+            let posY = (64/inputCanvas.firstChild.clientHeight * canvasEvent.offsetY) + inputCanvas.fontSize/3;
             inputCanvas.drawCharacter(document.querySelector('#'+inputId).value, posX, posY);
             currentGuessInput.value = document.querySelector('#'+inputId).value;
             currentIteration++;
