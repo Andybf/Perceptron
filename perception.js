@@ -32,12 +32,12 @@ export default class Perceptron {
         });
         if (receivedImageValue > this.bias) {
             this.brain.forEach( neuron => {
-                neuron.connectionWeight -= neuron.light;
+                neuron.connectionWeight += neuron.light;
             });
             isSuccess = true;
         } else {
             this.brain.forEach( neuron => {
-                neuron.connectionWeight += neuron.light;
+                neuron.connectionWeight -= neuron.light;
             });
             this.bias = receivedImageValue;
         }

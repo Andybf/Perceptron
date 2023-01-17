@@ -24,6 +24,8 @@ let drawSymbol1Button;
 let drawSymbol2Button;
 
 let currentStatusInput;
+let currentGuessInput;
+let correctAnswerInput
 let trainingSpeedInput;
 let iterationCountInput;
 let perceptronBiasInput;
@@ -71,6 +73,8 @@ async function main() {
     });
 
     currentStatusInput = document.querySelector('input[id="current-status"]');
+    currentGuessInput = document.querySelector('input[id="perceptron-guess"]');
+    correctAnswerInput = document.querySelector('input[id="correct-answer"]');
     iterationCountInput = document.querySelector('input[id="iteration-count"]');
     perceptronBiasInput = document.querySelector('input[id="perceptron-bias"]');
     successRateInput = document.querySelector('input[id="success-rate"]');
@@ -101,9 +105,15 @@ function drawCharViaUserInput(event) {
             let posX = 64/inputCanvas.clientWidth * canvasEvent.offsetX;
             let posY = (64/inputCanvas.clientHeight * canvasEvent.offsetY) + inputCanvas.fontSize/3;
             inputCanvas.drawCharacter(document.querySelector('#'+inputId).value, posX, posY);
+            currentGuessInput.value = document.querySelector('#'+inputId).value;
             currentIteration++;
             if(isPerceptronHasSuccess()) {
                 successCount++;
+                correctAnswerInput.value = currentGuessInput.value;
+            } else {
+                correctAnswerInput.value = (currentGuessInput.value == document.querySelector('#first-symbol').value) ?
+                                            document.querySelector('#second-symbol').value :
+                                            document.querySelector('#first-symbol').value;
             }
             updateInterface();
         };
@@ -141,12 +151,17 @@ function startTraining() {
     trainingIntervalId = setInterval(() => {
         if(randBetween(1,2,0) > 1) {
             inputCanvas.drawCharacterAtRandomPosition(group1Input.value);
+            currentGuessInput.value = group1Input.value;
         } else {
             inputCanvas.drawCharacterAtRandomPosition(group2Input.value);
+            currentGuessInput.value = group2Input.value;
         }
         currentIteration++;
         if(isPerceptronHasSuccess()) {
             successCount++;
+            correctAnswerInput.value = currentGuessInput.value;
+        } else {
+            correctAnswerInput.value = (currentGuessInput.value == group1Input.value) ? group2Input.value : group1Input.value;
         }
         updateInterface();
     },1000/trainingSpeedInput.value);

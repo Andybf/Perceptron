@@ -5,6 +5,7 @@ html {
     color: white
 }
 body {
+    background: linear-gradient(0deg, #879a7f, #e1e1e1, #6d8293);
     display: flex;
     height: inherit;
     margin: 0;
@@ -24,11 +25,7 @@ h3 {
 }
 
 #perceptron-menu {
-    position: absolute;
-    top: 12%;
-    bottom: 12%;
-    left: 1%;
-    background: #0000008a;
+    background: #00000066;
     backdrop-filter: blur(100px);
     padding: 1.25rem;
     border-radius: 0.5rem;
